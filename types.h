@@ -11,7 +11,9 @@ typedef enum err_t
     NONE                = 0,
     IO_ERROR            = 1,
     HASH_COLLISION      = 2,
-    NOT_FOUND           = 3
+    NOT_FOUND           = 3,
+    UNCOMPATIBLE_SIZES  = 4,
+    GENERIC_ERR          = 5
     
 } err_t;
 
