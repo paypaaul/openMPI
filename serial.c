@@ -11,7 +11,7 @@
 uint64_t hash_code(char *str, int len) {
     unsigned long long hash = 0;
     for (int i = 0; i < len; i++) {
-        hash = (hash * PRIME_NUMBER + str[i]) % UINT_MAX;
+        hash = (hash * PRIME_NUMBER + str[i]) % INT32_MAX;
     }
     return hash;
 }
@@ -70,26 +70,37 @@ void rabin_karp(status_t *status, char *pattern, char *str) {
 char *read_file(char file_name[]) {  
 
     FILE *file_in;
-    char buff[200];
+    char buff[1000];
     char *result;
     int count = 0;
+    int dim = 2;
     file_in = fopen(file_name,"r");
-    result = malloc(10000*sizeof(char));
+    result = (char*) malloc((UINT32_MAX)*sizeof(char));
     int size;
 
     while(fgets(buff, sizeof(buff), file_in)) {
-
-        if(count ==0)
+        // printf("\nBUFF\n%s\n", buff);
+        // printf("\ncount: %d, size: %d", count, size);
+        if(count ==0){
             size = strlen(buff);
+            // result = malloc(dim*size*sizeof(char));
+        }
 
-        memcpy(result+(count*size)-count , buff, size);
+        memcpy(result+(count*size)-count , buff, size); // memcpy()
         count++;
         size = strlen(buff);
+        // printf("\nsize: %d, dim: %d, count: %d\n", size, dim , count);
+        // if(size*dim<size*count)
+        //     dim*=2;
+        //     result = realloc(result, dim*size*sizeof(char));
+        if(count>26512142)
+            break;
+
 
     }
     
+    puts("read done");
     result = realloc(result, strlen(result));
-
     fclose(file_in);
 
     return result;
@@ -103,14 +114,20 @@ int main(int argc, char **argv) {
 
     state.current_err= NONE;
     state.freq=0;
-    state.match_indexes = malloc(10*sizeof(uint32_t));
+    state.match_indexes = malloc(10000*sizeof(uint32_t));
 
-    source = read_file("sample02.txt");
+    source = read_file("data.txt");
     pattern = read_file("pattern02.txt");
     // printf("\n\n%s\n", source);
     // printf("\n\n%s\n", pattern);
 
     rabin_karp(&state, pattern, source);
+
+    printf("\n----RESULTS----\n\tNumber of matches: %d\n\t\t Indexes:\n\t\t\t", state.freq);
+    for(int k=0; k<state.freq;k++)
+        printf("%u, ",state.match_indexes[k]);
+        puts("");
+
 
     free(source);
     free(pattern);
