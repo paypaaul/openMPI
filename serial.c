@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include "types.h"
-
+#include <time.h>
 #define PRIME_NUMBER 101
 #define _LARGEFILE64_SOURCE
 
@@ -73,9 +73,9 @@ char *read_file(char file_name[]) {
     char buff[1000];
     char *result;
     int count = 0;
-    int dim = 2;
+    // int dim = 2;
     file_in = fopen(file_name,"r");
-    result = (char*) malloc((UINT32_MAX)*sizeof(char));
+    result = malloc((UINT32_MAX)*sizeof(char));
     int size;
 
     while(fgets(buff, sizeof(buff), file_in)) {
@@ -85,16 +85,22 @@ char *read_file(char file_name[]) {
             size = strlen(buff);
             // result = malloc(dim*size*sizeof(char));
         }
-
+        if(count==26512143){
+            puts("here");
+        }
+        // printf("\n\n offset result: %d", (count*size)-count);
+        // printf("\n\n size of result: %lu", sizeof(result));
         memcpy(result+(count*size)-count , buff, size); // memcpy()
+        // printf("%d\n",count);
+        
         count++;
         size = strlen(buff);
         // printf("\nsize: %d, dim: %d, count: %d\n", size, dim , count);
         // if(size*dim<size*count)
         //     dim*=2;
         //     result = realloc(result, dim*size*sizeof(char));
-        if(count>26512142)
-            break;
+        // if(count>26512142)
+        //     break;
 
 
     }
@@ -108,6 +114,7 @@ char *read_file(char file_name[]) {
 
 int main(int argc, char **argv) {
 
+    clock_t start_time = clock();
     status_t state;
     char *source; 
     char *pattern;
@@ -116,7 +123,7 @@ int main(int argc, char **argv) {
     state.freq=0;
     state.match_indexes = malloc(10000*sizeof(uint32_t));
 
-    source = read_file("data.txt");
+    source = read_file("data2.txt");
     pattern = read_file("pattern02.txt");
     // printf("\n\n%s\n", source);
     // printf("\n\n%s\n", pattern);
@@ -132,6 +139,8 @@ int main(int argc, char **argv) {
     free(source);
     free(pattern);
 
+    clock_t end_time = clock();
+    double time_spent = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+    printf("Execution time: %.3f seconds\n", time_spent);
     return 0;
 }
-

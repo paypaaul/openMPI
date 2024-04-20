@@ -1,0 +1,12 @@
+# GIT IGNORE #
+*~
+source_setup.dSYM
+serial.dSYM
+a.out
+.vscode
+.DS_Store
+GRCh37_latest_genomic.fna
+data.txt
+data2.txt
+serial
+source_setup

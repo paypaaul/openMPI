@@ -13,7 +13,7 @@ typedef enum err_t
     HASH_COLLISION      = 2,
     NOT_FOUND           = 3,
     UNCOMPATIBLE_SIZES  = 4,
-    GENERIC_ERR          = 5
+    GENERIC_ERR         = 5
     
 } err_t;
 
