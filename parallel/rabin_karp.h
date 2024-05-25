@@ -23,14 +23,15 @@ void rabin_karp(status_t *status, char *pattern, char *str, int n_cores, int p_r
     int i, j = 0;
     char *start = str + p_rank*(str_len);
 
+
     pat_hash = hash_code(pattern, pat_len);
     
     for(i = 0; i <= str_len-pat_len;i++) {
-        str_hash = hash_code(str+i, pat_len);
+        str_hash = hash_code(start+i, pat_len);
         if(pat_hash == str_hash){
             // pattern detected, checking collision...
             for (j = 0; j < pat_len; j++){
-                if(pattern[j] != str[i+j]){
+                if(pattern[j] != start[i+j]){
                     status->current_err = HASH_COLLISION;
                     // collision detected and avoided
                     break;
