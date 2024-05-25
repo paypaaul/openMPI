@@ -9,6 +9,9 @@
 #define PRIME_NUMBER 101
 #define _LARGEFILE64_SOURCE
 
+//git add
+//git commit -m *insert message*
+//git push
 
 void main (int argc, char *argv[]) {
 	int myrank, size;
