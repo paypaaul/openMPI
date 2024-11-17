@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <limits.h>
+#include <mpi.h>
+
 
 #define ERR_SIZE 100
 
@@ -13,7 +15,9 @@ typedef enum err_t
     HASH_COLLISION      = 2,
     NOT_FOUND           = 3,
     UNCOMPATIBLE_SIZES  = 4,
-    GENERIC_ERR         = 5
+    MPI                 = 5,
+    GENERIC_ERR         = 6,
+    CORE_IDLE           = 7
     
 } err_t;
 

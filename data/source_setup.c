@@ -17,9 +17,9 @@ void correct_file(char file_name_out[], char file_name_in[]) {
     while(fgets(buff, sizeof(buff), file_in)) {
         // printf("\nBUFF\n%s\n", buff);
         // printf("\ncount: %d, size: %d", count, size);
-        if(count ==26512143)
+        if(count ==26512140)
             break;
-        for(int k=0;k<strlen(buff)-1;k++) {
+        for(long int k=0;k<strlen(buff)-1;k++) {
             if(buff[k]!='N')
                 valid=1;
             if(buff[0]=='>') {
@@ -40,7 +40,7 @@ void correct_file(char file_name_out[], char file_name_in[]) {
 
 int main(int argc, char **argv) {
 
-    correct_file("data2.txt","GRCh37_latest_genomic.fna");
+    correct_file("data/data2.txt","data/GRCh37_latest_genomic.fna");
 
     return 0;
 }
