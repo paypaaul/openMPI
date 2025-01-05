@@ -148,13 +148,15 @@ int main (int argc, char *argv[]) {
 		}
 
 		MPI_Barrier(MPI_COMM_WORLD);
-		
+
+		printf("\n\nRESULTS\n\n process %d - frequency %d", myrank, status.freq);
+
 		myfreq = status.freq;
 		MPI_Gather(&myfreq, 1, MPI_INT, freq_vec, 1, MPI_INT, 0, MPI_COMM_WORLD);
 		
 		if(myrank == 0) {
 			int t_frequency = 0;
-			for(int i = 0; i<size;i++){
+			for(int i = 1; i<size;i++){
       			t_frequency = t_frequency + freq_vec[i];
     		}
 			status.freq += t_frequency;
