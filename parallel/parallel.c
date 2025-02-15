@@ -44,7 +44,7 @@ int main (int argc, char *argv[]) {
 	MPI_Status MPIstatus;
 	MPI_Offset txt_len;
 	MPI_File file_in;
-	char *pat_name = "data/test-pattern.txt";
+	char *pat_name = "data/pattern-10.txt";
 	char *text_name = "data/data2.txt";
 	int reminder;
 	char *pattern;
@@ -72,7 +72,7 @@ int main (int argc, char *argv[]) {
         fprintf(stderr, "Error opening file %s\n", text_name);
         MPI_Abort(MPI_COMM_SELF, err);
     } else {
-        printf("File %s opened successfully\n", text_name);
+        // printf("File %s opened successfully\n", text_name);
     }
 
   	MPI_File_get_size(file_in, &txt_len);
@@ -89,15 +89,14 @@ int main (int argc, char *argv[]) {
 		pat_len = strlen(pattern);
 		printf("file dim: %lld - pattern dim: %d\n", txt_len, pat_len);
 		block_size = txt_len / size;
-		// printf("\nblock_size: %lld\n", block_size);
+	
 		while(block_size < pat_len) {
 			size--;
 			block_size = txt_len / size;
 		}
 			
 		reminder = txt_len % size;
-		// printf("total cores: %d\nactive cores: %d\nblock dim: %lld\nreminder: %d\n", n_cores, size, block_size, reminder);
-		// printf("%s", pattern);
+
 		printf("pattern:%s",pattern);
 		msg[0] = block_size; //block_dim + patlen - 1 cioe quanto analizza ognuno
 		msg[1] = pat_len;	//lunghezza pattern
@@ -106,8 +105,6 @@ int main (int argc, char *argv[]) {
 
 	}
 
-	// printf("myrank: %d", myrank);
-	// MPI_Barrier(MPI_COMM_WORLD);
 
   	MPI_Bcast(msg, 4, MPI_LONG, 0, MPI_COMM_WORLD);
 	
@@ -115,7 +112,6 @@ int main (int argc, char *argv[]) {
 	pat_len = msg[1];
 	reminder = msg[2];
 	size = msg[3];
-	// printf("********BLOCK SIZE BEFORE: &ll")
 	if(myrank!=0 ){
 		pattern = malloc(pat_len*sizeof(char));
 	}
@@ -125,7 +121,6 @@ int main (int argc, char *argv[]) {
 		status.current_err = CORE_IDLE;
 	}
 	
-	// printf("REMINDER: %d", reminder);
 	if(status.current_err != CORE_IDLE){
 
 
@@ -149,7 +144,7 @@ int main (int argc, char *argv[]) {
 
 		MPI_Barrier(MPI_COMM_WORLD);
 
-		printf("\n\nRESULTS\n\n process %d - frequency %d", myrank, status.freq);
+		// printf("\n\nRESULTS\n\n process %d - frequency %d", myrank, status.freq);
 
 		myfreq = status.freq;
 		MPI_Gather(&myfreq, 1, MPI_INT, freq_vec, 1, MPI_INT, 0, MPI_COMM_WORLD);
